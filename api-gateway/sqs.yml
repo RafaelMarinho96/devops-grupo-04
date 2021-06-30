@@ -1,0 +1,26 @@
+service: sqs
+provider:
+  name: aws
+  stage: dev
+  runtime: python3.6
+  memorySize: 128
+  timeout: 300
+  iamRoleStatements:
+    - Effect: allow
+      Action:
+        - sqs:ChangeMessageVisibility
+        - sqs:DeleteMessage
+        - sqs:ReceiveMessage
+        - sqs:SendMessage
+      Resource: "arn:aws:sqs:us-east-1:*:{name-here}*"
+  environment:
+      sqs_url: "https://sqs.us-east-1.amazonaws.com/558691965123/{name-here}"
+      sqs_url_dest: "https://sqs.us-east-1.amazonaws.com/558691965123/{name-here}"
+
+functions:
+  sqsHandler:
+    handler: sqs.handler
+    events:
+      - schedule:
+        rate: rate(5 minutes)
+        enabled: false
