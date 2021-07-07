@@ -1,0 +1,33 @@
+service: book-lambdas
+
+provider:
+  name: aws
+  region: 'us-east-1'
+  runtime: python3.6
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'sns:*'
+      Resource:
+        -  'arn:aws:sns:us-east-1:547884759998:book_sns_topic'
+
+# you can overwrite defaults here
+stage: production
+functions:
+  bookcreate:
+    handler: create.handler
+    events:
+      - http:
+          path: /book/create
+          method: post
+          cors: true
+    environment:
+      snsArn: 'arn:aws:sns:us-east-1:547884759998:book_sns_topic'
+          
+  sellbook:
+    handler: sell.handler
+    events:
+      - http:
+          path: /sell/book
+          method: post
+          cors: true
