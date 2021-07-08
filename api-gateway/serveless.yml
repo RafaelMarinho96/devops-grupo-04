@@ -31,3 +31,5 @@ functions:
           path: /sell/book
           method: post
           cors: true
+    environment:
+      snsArn: 'arn:aws:sns:us-east-1:547884759998:book_sns_topic'

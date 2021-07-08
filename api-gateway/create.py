@@ -9,20 +9,28 @@ def handler(event, context):
     sns = boto3.client('sns')
     snsArn=os.environ.get('snsArn', '')
 
-    res = sns.publish(
-                    TopicArn=snsArn,
-                    Subject="Order Creation",
-                    Message=json.dumps(payload),
-                    )
-
-    message={"Status":"Created","BookID": payload.get('book_id')}
+    if all (k in payload for k in ("book_id","book_name", "book_preco")):
+        res = sns.publish(
+                        TopicArn=snsArn,
+                        Subject="Order Creation",
+                        Message=json.dumps(payload),
+                        )
     
-    response = {
-        "statusCode": 200,
-        "headers": {
-            "Content-Type": "application/json"
-        },
-        "body": json.dumps(message)
-    }
-
+        message={"Status":"Created","BookID": payload.get('book_id')}
+        
+        response = {
+            "statusCode": 200,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": json.dumps(message)
+        }
+    else:
+        response = {
+            "statusCode": 500,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": json.dumps(message)
+        }
     return response
