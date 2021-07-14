@@ -1,10 +1,11 @@
 from sqsHandler import SqsHandler
+from s3Handler import S3Handler
 from env import Variables
 
 def handler(event, context):
     env = Variables()
     sqs = SqsHandler(env.get_sqs_url())
-    sqsDest = SqsHandler(env.get_sqs_url_dest())
+    s3 = S3Handler(env.get_s3_url())
     
     for i in range(100):
         msgs = sqs.getMessage(10)
@@ -15,5 +16,8 @@ def handler(event, context):
             break
         
         for msg in msgs['Messages']:
-            sqsDest.send(str(msg['Body']))
+            s3.put_object(
+                str(msg['Body']).encode('utf-8'),
+                msg['Body']['book_id'],
+            )
             sqs.deleteMessage(msg['ReceiptHandle'])
