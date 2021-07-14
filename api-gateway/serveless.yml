@@ -8,8 +8,10 @@ provider:
     - Effect: 'Allow'
       Action:
         - 'sns:*'
+        - 'sqs:*'
       Resource:
-        -  'arn:aws:sns:us-east-1:547884759998:book_sns_topic'
+        -  'arn:aws:sns:us-east-1:*:book_sns_topic'
+        -  'arn:aws:sqs:us-east-1:*:sqs_book_queue'
 
 # you can overwrite defaults here
 stage: production
@@ -33,3 +35,12 @@ functions:
           cors: true
     environment:
       snsArn: 'arn:aws:sns:us-east-1:547884759998:book_sns_topic'
+  
+  writeFile:
+    handler: sqs.handler
+    events:
+      - sqs:
+          arn: 'arn:aws:sqs:us-east-1:547884759998:sqs_book_queue'
+    environment:
+      s3_url: 'lab-fiap-78aoj-grupo-04-book-fiap'
+      sqs_url: 'https://sqs.us-east-1.amazonaws.com/547884759998/sqs_book_queue'

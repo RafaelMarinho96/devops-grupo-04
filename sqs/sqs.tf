@@ -17,3 +17,9 @@ resource "aws_sqs_queue" "sqs_book_queue" {
     Environment = "production"
   }
 }
+
+resource "aws_sns_topic_subscription" "book_sns_topic_update" {
+  topic_arn = "arn:aws:sns:us-east-1:547884759998:book_sns_topic"
+  protocol  = "sqs"
+  endpoint  = aws_sqs_queue.sqs_book_queue_dead_letter.arn
+}

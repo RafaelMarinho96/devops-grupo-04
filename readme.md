@@ -45,6 +45,9 @@ cd ./api-gateway
 
 Create API gateway with lambdas
 
-1. `sls create --template=aws-python3`.
-2. `mv base.yml serveless.yml`.
-3. `sls deploy`.
+1. `sls deploy --config serveless.yml`.
+
+Tricks:
+
+Seeing logs:
+1. `sls logs -f sellbook --config serveless.yml`.
