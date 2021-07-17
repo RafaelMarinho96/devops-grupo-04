@@ -9,7 +9,7 @@ def handler(event, context):
     sns = boto3.client('sns')
     snsArn=os.environ.get('snsArn', '')
 
-    if all (k in payload for k in ("book_id","book_name", "book_preco")):
+    if all (k in payload for k in ("book_id","book_name", "book_price")):
         res = sns.publish(
                         TopicArn=snsArn,
                         Subject="Order Creation",
@@ -27,10 +27,10 @@ def handler(event, context):
         }
     else:
         response = {
-            "statusCode": 500,
+            "statusCode": 400,
             "headers": {
                 "Content-Type": "application/json"
             },
-            "body": json.dumps(message)
+            "body": json.dumps({"error": "body mal formated"})
         }
     return response

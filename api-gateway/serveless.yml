@@ -41,6 +41,7 @@ functions:
     events:
       - sqs:
           arn: 'arn:aws:sqs:us-east-1:547884759998:sqs_book_queue'
+          batchSize: 1
     environment:
       s3_url: 'lab-fiap-78aoj-grupo-04-book-fiap'
       sqs_url: 'https://sqs.us-east-1.amazonaws.com/547884759998/sqs_book_queue'

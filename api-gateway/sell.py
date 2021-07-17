@@ -15,7 +15,7 @@ def handler(event, context):
                         Subject="Order Creation",
                         Message=json.dumps(payload),
                         )
-
+        
         message={"Status":"Created","BookID": payload.get('book_id')}
     
         response = {
@@ -27,11 +27,11 @@ def handler(event, context):
         }
     else:
         response = {
-            "statusCode": 200,
+            "statusCode": 400,
             "headers": {
                     "Content-Type": "application/json"
             },
-            "body": json.dumps(message)
+            "body": json.dumps({"error": "body mal formated"})
         }
 
     return response
