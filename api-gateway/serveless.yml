@@ -24,7 +24,7 @@ functions:
           method: post
           cors: true
     environment:
-      snsArn: 'arn:aws:sns:us-east-1:547884759998:book_sns_topic'
+      snsArn: {"Fn::Join": ["", ['arn:aws:sns:', {Ref: AWS::Region}, ':', {Ref: AWS::AccountId}, ':', 'book_sns_topic']]}
           
   sellbook:
     handler: sell.handler
@@ -34,14 +34,22 @@ functions:
           method: post
           cors: true
     environment:
-      snsArn: 'arn:aws:sns:us-east-1:547884759998:book_sns_topic'
+      snsArn: {"Fn::Join": ["", ['arn:aws:sns:', {Ref: AWS::Region}, ':', {Ref: AWS::AccountId}, ':', 'book_sns_topic']]}
   
   writeFile:
     handler: sqs.handler
     events:
       - sqs:
-          arn: 'arn:aws:sqs:us-east-1:547884759998:sqs_book_queue'
+          arn:
+            Fn::Join:
+              - ':'
+              - - arn
+                - aws
+                - sqs
+                - Ref: AWS::Region
+                - Ref: AWS::AccountId
+                - sqs_book_queue
           batchSize: 1
     environment:
       s3_url: 'lab-fiap-78aoj-grupo-04-book-fiap'
-      sqs_url: 'https://sqs.us-east-1.amazonaws.com/547884759998/sqs_book_queue'
+      sqs_url: {"Fn::Join": ["", ['https://sqs.us-east-1.amazonaws.com/', {Ref: AWS::AccountId}, 'sqs_book_queue']]}
