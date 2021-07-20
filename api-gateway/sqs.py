@@ -1,6 +1,7 @@
 import json
 from s3Handler import S3Handler
 from env import Variables
+from build_key import build_key
 
 def handler(event, context):
     env = Variables()
@@ -11,5 +12,5 @@ def handler(event, context):
         print('payload {payload}'.format(payload=payload))
         s3.put_object(
                 str(payload).encode('utf-8'),
-                str('book-id-{id}'.format(id=payload["book_id"])),
+                build_key(payload["book_id"], payload.get("book_name", ''), payload.get("customer_id")),
             )
