@@ -51,5 +51,5 @@ functions:
                 - sqs_book_queue
           batchSize: 1
     environment:
-      s3_url: 'lab-fiap-78aoj-grupo-04-book-fiap'
+      s3_url: 'lab-fiap-78aoj-grupo-04-bucket-book' # [Troubleshoot] Update bucket name
       sqs_url: {"Fn::Join": ["", ['https://sqs.us-east-1.amazonaws.com/', {Ref: AWS::AccountId}, 'sqs_book_queue']]}

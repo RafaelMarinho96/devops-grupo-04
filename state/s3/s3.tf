@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "b" {
-  bucket = "lab-fiap-78aoj-grupo-04"
+  bucket = "lab-fiap-78aoj-grupo-04-state-book" // [Troubleshoot] Update bucket name
   acl    = "private"
 
   tags = {
